@@ -1,4 +1,3 @@
-import kotlin.system.exitProcess
 
 fun addition(formel: String): Boolean {
     return "+" in formel
@@ -27,6 +26,7 @@ fun prüfeOperationen(formel: String): String {
     return enthalten
 }
 
+
 // Prüft ob die Formel mit einer Zahl oder Klammer anfängt und aufhört
 fun isFormelKorrekt(formel: String): Boolean{
     return formel.first().isDigit() || formel.startsWith("(") && formel.last().isDigit() || formel.endsWith(")")
@@ -34,13 +34,11 @@ fun isFormelKorrekt(formel: String): Boolean{
 
 // Prüft wie viele Klammern in der Formel auf gehen
 fun anzahlKlammernAuf(formel: String): Int {
-    var anzahl = formel.filter { it == '(' }.count()
-    return anzahl
+    return formel.filter { it == '(' }.count()
 }
 // Prüft wie viele Klammern in der Formel zu gehen
 fun anzahlKlammernZu(formel: String): Int {
-    var anzahl = formel.filter { it == ')' }.count()
-    return anzahl
+    return formel.filter { it == ')' }.count()
 }
 
 // Funktion in der alle Komponenten zusammengefügt werden
@@ -48,7 +46,7 @@ fun starteProgram() {
     println("Bitte gib hier deine Formel an!")
 
     // Einlesen der Formel
-    var formel = readln()
+    val formel = readln()
 
     // Wenn die Formel eine FORMEL ist weiter machen! Formel fängt mit Zahl oder Klammer an und auf
     if(isFormelKorrekt(formel)){
