@@ -27,7 +27,6 @@ fun prüfeOperationen(formel: String): String {
     return enthalten
 }
 
-
 // Prüft ob die Formel mit einer Zahl oder Klammer anfängt und aufhört und mindestens 3 Zeichen
 fun isFormelKorrekt(formel: String): Boolean{
     return (formel.first().isDigit() || formel.startsWith("(")) && (formel.last().isDigit() || formel.endsWith(")")) && formel.length >= 3
@@ -74,9 +73,14 @@ fun starteProgram() {
 fun main() {
     // Start des Programms
     starteProgram()
+
+    // ((13+3)+3)+4/(4+31)
+    // (  x1  + 3) + 4/(4+31)
+    //    x2   + 4 / ( 4+31)
+    // x2 + 4 / x3
+
 }
 
-//TODO auf regex gruppen prüfen(was ist regex?)
 
 
 
