@@ -1,35 +1,36 @@
 
-fun addition(formel: String): Boolean {
+fun isAddition(formel: String): Boolean {
     return "+" in formel
 }
-fun subtraktion(formel: String): Boolean {
+
+fun isSubtraktion(formel: String): Boolean {
     return "-" in formel
 }
-fun multiplikation(formel: String): Boolean {
+fun isMultiplikation(formel: String): Boolean {
     return "*" in formel
 }
-fun division(formel: String): Boolean {
+fun isDivision(formel: String): Boolean {
     return "/" in formel
 }
-fun klammern(formel: String): Boolean {
+fun isKlammern(formel: String): Boolean {
     return ("(" in formel) && (")" in formel)
 }
 
 // Prüft welche Operationen getätigt werden
 fun prüfeOperationen(formel: String): String {
     var enthalten = ""
-    if (addition(formel))  enthalten += "Die Formel enthaelt Addtition\n"
-    if (subtraktion(formel)) enthalten += "Die Formel enthaelt Subtraktion\n"
-    if (multiplikation(formel))  enthalten += "Die Formel enthaelt Multiplikation\n"
-    if (division(formel))  enthalten += "Die Formel enthaelt Division\n"
-    if (klammern(formel)) enthalten += "Die Formel enthaelt Klammern"
+    if (isAddition(formel))  enthalten += "Die Formel enthaelt Addtition\n"
+    if (isSubtraktion(formel)) enthalten += "Die Formel enthaelt Subtraktion\n"
+    if (isMultiplikation(formel))  enthalten += "Die Formel enthaelt Multiplikation\n"
+    if (isDivision(formel))  enthalten += "Die Formel enthaelt Division\n"
+    if (isKlammern(formel)) enthalten += "Die Formel enthaelt Klammern"
     return enthalten
 }
 
 
-// Prüft ob die Formel mit einer Zahl oder Klammer anfängt und aufhört
+// Prüft ob die Formel mit einer Zahl oder Klammer anfängt und aufhört und mindestens 3 Zeichen
 fun isFormelKorrekt(formel: String): Boolean{
-    return formel.first().isDigit() || formel.startsWith("(") && formel.last().isDigit() || formel.endsWith(")")
+    return (formel.first().isDigit() || formel.startsWith("(")) && (formel.last().isDigit() || formel.endsWith(")")) && formel.length >= 3
 }
 
 // Prüft wie viele Klammern in der Formel auf gehen
@@ -53,7 +54,7 @@ fun starteProgram() {
         // Der Rechner ist im Stande, Punkt-vor-Strich und Klammern zu erkennen. Darüber hinaus kann er die vier Grundoperationen: Multiplikation, Division, Addition, Subtraktion
         println(prüfeOperationen(formel))
         // Gib Anzahl Kammern aus
-        if(klammern(formel)){
+        if(isKlammern(formel)){
             // Prüfe ob die Anzahl auf- und zugehender Klammern gleich ist
             if(anzahlKlammernAuf(formel) == anzahlKlammernZu(formel)) println("Die Anzahl der Klammern in dieser Formel betraegt ${anzahlKlammernAuf(formel)}")
             // Bei ungleich -> Neue Formel
@@ -65,20 +66,14 @@ fun starteProgram() {
         }
     }
     else{
-        println("Deine Formel faengt nicht mit einer Zahl oder Klammer an unf hoert nicht mit einer Zahl oder Klammer auf!")
+        println("Entweder zu kleiner Formel oder am Anfang/Ende sind falsche Werte")
         starteProgram()
     }
 }
 
 fun main() {
     // Start des Programms
-    //starteProgram()
-    println("fuer ): ${isFormelKorrekt(")")}")
-    println("fuer (: ${isFormelKorrekt("(")}")
-    println("fuer 3): ${isFormelKorrekt("3)")}")
-    println("fuer )3: ${isFormelKorrekt(")3")}")
-    println("fuer (3): ${isFormelKorrekt("(3)")}")
-
+    starteProgram()
 }
 
 //TODO auf regex gruppen prüfen(was ist regex?)
