@@ -1,8 +1,6 @@
-
 fun isAddition(formel: String): Boolean {
     return "+" in formel
 }
-
 fun isSubtraktion(formel: String): Boolean {
     return "-" in formel
 }
@@ -15,7 +13,6 @@ fun isDivision(formel: String): Boolean {
 fun isKlammern(formel: String): Boolean {
     return ("(" in formel) && (")" in formel)
 }
-
 // Prüft welche Operationen getätigt werden
 fun prüfeOperationen(formel: String): String {
     var enthalten = ""
@@ -26,12 +23,10 @@ fun prüfeOperationen(formel: String): String {
     if (isKlammern(formel)) enthalten += "Die Formel enthaelt Klammern"
     return enthalten
 }
-
 // Prüft ob die Formel mit einer Zahl oder Klammer anfängt und aufhört und mindestens 3 Zeichen
 fun isFormelKorrekt(formel: String): Boolean{
     return (formel.first().isDigit() || formel.startsWith("(")) && (formel.last().isDigit() || formel.endsWith(")")) && formel.length >= 3
 }
-
 // Prüft wie viele Klammern in der Formel auf gehen
 fun anzahlKlammernAuf(formel: String): Int {
     return formel.filter { it == '(' }.count()
@@ -40,6 +35,30 @@ fun anzahlKlammernAuf(formel: String): Int {
 fun anzahlKlammernZu(formel: String): Int {
     return formel.filter { it == ')' }.count()
 }
+// Teilt die Formel in die einzelnen Komponenten durch prüfen wo die erste Klammer schließt und kommt dann zurück -> ersetzt das in substring
+
+// TODO
+fun teileFormelInKlammern(formel: String) {
+    if(formel.contains("(")){
+        var temp = formel
+        var subAuf = MutableList<Any>(0){}
+        var subZU = MutableList<Any>(0){}
+        while('(' in temp || ')' in temp){
+            subAuf.add(temp.indexOf("("))
+            subZU.add(temp.indexOf(")"))
+            temp = temp.replace("(","")
+            temp = temp.replace(")","")
+            println(temp)
+            println(subAuf)
+            println(subZU)
+        }
+
+    }else{
+
+    }
+}
+
+
 
 // Funktion in der alle Komponenten zusammengefügt werden
 fun starteProgram() {
@@ -69,16 +88,15 @@ fun starteProgram() {
         starteProgram()
     }
 }
-
 fun main() {
     // Start des Programms
-    starteProgram()
-
+    //starteProgram()
     // ((13+3)+3)+4/(4+31)
     // (  x1  + 3) + 4/(4+31)
     //    x2   + 4 / ( 4+31)
     // x2 + 4 / x3
-
+    var a = "((13+3)+3)+4/(4+31)"
+    println(a.replace("(", ""))
 }
 
 
