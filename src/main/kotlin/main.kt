@@ -1,4 +1,5 @@
 import kotlin.math.abs
+import kotlin.math.min
 
 fun isAddition(formel: String): Boolean {
     return "+" in formel
@@ -38,42 +39,48 @@ fun anzahlKlammernZu(formel: String): Int {
     return formel.filter { it == ')' }.count()
 }
 // Berechne kleinste Abständen von Listen Werten -- soll nur genutzt werden, wenn listAuf und listZu gleich groß sind.
-fun kleinsterAbstandVonIndices(listAuf:MutableList<String>, listZu:MutableList<String>): MutableList<MutableList<Int>> {
-    var message = ""
+fun kleinsterAbstandVonIndices(listAuf:MutableList<Int>, listZu:MutableList<Int>): MutableList<MutableList<Int>> {
     // Liste mit den Abständen der AUF Klammern zu den ZU Klammern
     // temp[0] entspricht der ersten AUFGEHENDEN Klammer, die WERTE drinne sind die ABSTÄNDE zu den schließenden Klammern!!
     var temp = MutableList(listAuf.size){MutableList(listAuf.size){0}}
     for (i in listAuf.indices){
         for (j in listZu.indices){
-            temp[i][j] = abs(listAuf[i].toInt() - listZu[j].toInt())
+            if(listAuf[i] - listZu[j] < 0)
+                temp[i][j] = listAuf[i] - listZu[j]
         }
     }
     return temp
 }
+
 // Prüft in der Formel die passenden indices der Klammern.
 fun teileFormelInKlammern(formel: String) {
     if(formel.contains("(")){
         var temp = formel
+        var map = mutableMapOf<Int, Int>()
         // In diesen Listen werden alle Indices der Klammern gespeichert.
-        var subAuf = MutableList(anzahlKlammernAuf(formel)){""}
-        var subZU = MutableList(anzahlKlammernZu(formel)){""}
-        // für die In dizes in den Listen -> um Arrayoutofbound zu vermeiden.
+        var subAuf = MutableList(anzahlKlammernAuf(formel)){0}
+        var subZU = MutableList(anzahlKlammernZu(formel)){0}
+        // für die Indizes in den Listen -> um Arrayoutofbound zu vermeiden.
         var pointerA = 0
         var pointerB = 0
         // Prüfung der indices
         for(i in formel.indices){
             if(formel[i] == '('){
-                subAuf[pointerA] = i.toString()
+                subAuf[pointerA] = i
                 pointerA++
             }
             if(formel[i] == ')'){
-                subZU[pointerB] = i.toString()
+                subZU[pointerB] = i
                 pointerB++
+                if(pointerA > pointerB){
+
+                }
             }
         }
-        // PRINTLN ANWEISUNG ÄNDERN ------------------------------------
-        println( kleinsterAbstandVonIndices(subAuf, subZU))
+        // PRINTLN ANWEISUNG ÄNDERN ------------------------------------  MAP ALS NEUE IDEE
+
         // TODO
+        println(map)
     }else{
 
     }
