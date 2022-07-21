@@ -51,15 +51,24 @@ fun kleinsterAbstandVonIndices(listAuf:MutableList<Int>, listZu:MutableList<Int>
     }
     return temp
 }
+// sortiert Map auf die richtigen stellen der Klammern
+fun sortiereMap(map: Map<Int, Int>):Map<Int, Int>{
+    var temp = map
+    for(keys in map){
+        println(keys)
+    }
+    return temp
+}
 
 // Prüft in der Formel die passenden indices der Klammern.
 fun teileFormelInKlammern(formel: String) {
     if(formel.contains("(")){
         var temp = formel
-        var map = mutableMapOf<Int, Int>()
+        var map = emptyMap<Int, Int>().toMutableMap()
         // In diesen Listen werden alle Indices der Klammern gespeichert.
         var subAuf = MutableList(anzahlKlammernAuf(formel)){0}
         var subZU = MutableList(anzahlKlammernZu(formel)){0}
+        var sub = MutableList<String>(0){""}
         // für die Indizes in den Listen -> um Arrayoutofbound zu vermeiden.
         var pointerA = 0
         var pointerB = 0
@@ -72,15 +81,43 @@ fun teileFormelInKlammern(formel: String) {
             if(formel[i] == ')'){
                 subZU[pointerB] = i
                 pointerB++
-                if(pointerA > pointerB){
-
-                }
             }
         }
-        // PRINTLN ANWEISUNG ÄNDERN ------------------------------------  MAP ALS NEUE IDEE
+        var lauf = 0
+        while (isKlammern(temp)){
+            println(temp.replace(
+                temp.substring(
+                    subAuf[lauf]+1,
+                    subZU[lauf]+1),
+                "x"))
+            sub.add(
+                temp.replace(
+                    temp.substring(
+                        subAuf[lauf]+1,
+                        subZU[lauf]+1),
+                    "x")
+            )
+            println(sub)
+            if('(' in sub[lauf]){
+                sub[lauf] = temp.replace(
+                    temp.substring(
+                        subAuf[lauf+1],
+                        subZU[lauf+1]),
+                    "x")
+            }
+            println(lauf)
+            lauf++
+            if(lauf == 2)
+                break
+        }
+        /*
 
-        // TODO
-        println(map)
+        for(i in subAuf.indices){
+            map.set(subAuf[i], subZU[i])
+        }
+        sortiereMap(map)
+
+         */
     }else{
 
     }
