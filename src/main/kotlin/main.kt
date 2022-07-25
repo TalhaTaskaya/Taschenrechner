@@ -1,5 +1,6 @@
 import kotlin.math.abs
 import kotlin.math.min
+import kotlin.math.round
 
 fun isAddition(formel: String): Boolean {
     return "+" in formel
@@ -15,6 +16,11 @@ fun isDivision(formel: String): Boolean {
 }
 fun isKlammern(formel: String): Boolean {
     return ("(" in formel) && (")" in formel)
+}
+
+fun isOperatorIn(formel: String):Boolean{
+    return isMultiplikation(formel) || isAddition(formel) ||
+            isDivision(formel) || isSubtraktion(formel)
 }
 // Prüft welche Operationen getätigt werden
 fun prüfeOperationen(formel: String): String {
@@ -85,14 +91,54 @@ fun teileFormelInKlammern(formel: String):String {
             }
             ret += "${sub[lauf]} "
             lauf++
-            println(ret)
         }
     }else{
         ret = formel
     }
+    println(ret)
     return ret
 }
 
+
+fun berechneKlammern(formel: String) {
+    var teil = formel.split(" ")
+    var sub = ""
+    var sub2 = List(0){""}
+    var sub3 = 0
+    for (i in teil.indices) {
+        if (isKlammern(teil[i])) {
+            sub = teil[i+1]
+            when{
+                isAddition(sub) -> {
+                    sub2 = sub.split("+")
+                    sub3 = sub2[0].toInt() + sub2[1].toInt()
+                }
+                isMultiplikation(sub) -> {
+                    sub2 = sub.split("*")
+                    sub3 = sub2[0].toInt() * sub2[1].toInt()
+                }
+                isSubtraktion(sub) -> {
+                    sub2 = sub.split("-")
+                    sub3 = sub2[0].toInt() - sub2[1].toInt()
+                }
+                isDivision(sub) -> {
+                    sub2 = sub.split("/")
+                    sub3 = round((sub2[0].toInt() / sub2[1].toInt()).toDouble()).toInt()
+                }
+            }
+            continue
+        }
+    }
+}
+
+fun berechneFormel(formel: String): String {
+    var teil = formel
+
+    if(isMultiplikation(formel)){
+        teil += teil.split("*").toString()
+    }
+    return teil
+}
 // Funktion in der alle Komponenten zusammengefügt werden
 fun starteProgram() {
     println("Bitte gib hier deine Formel an!")
@@ -107,8 +153,8 @@ fun starteProgram() {
             // Prüfe ob die Anzahl auf- und zugehender Klammern gleich ist
             if(anzahlKlammernAuf(formel) == anzahlKlammernZu(formel)){
                 println("Die Anzahl der Klammern in dieser Formel betraegt ${anzahlKlammernAuf(formel)}")
-                // AB HIER WEITER
-                teileFormelInKlammern(formel)
+
+                berechneKlammern(teileFormelInKlammern(formel))
             }
             // Bei ungleich -> Neue Formel
             else {
@@ -116,6 +162,9 @@ fun starteProgram() {
                 println("Rechner neustart!")
                 starteProgram()
             }
+        }
+        else{
+            berechneFormel(formel)
         }
     }
     else{
@@ -125,6 +174,14 @@ fun starteProgram() {
 }
 fun main() {
     // Start des Programms
-    starteProgram()
+    //starteProgram()
     //var formel = "((13+3)+3)+4/(4+31)"
+    var formel = "3*3+(2-3) 2-3"
+    println(when(formel){
+        in "*" -> "M"
+        in "+" -> "A"
+        in "/" -> "D"
+        in "-" -> "S"
+        else -> {"L"}
+    })
 }
