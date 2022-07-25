@@ -38,98 +38,66 @@ fun anzahlKlammernAuf(formel: String): Int {
 fun anzahlKlammernZu(formel: String): Int {
     return formel.filter { it == ')' }.count()
 }
-// Berechne kleinste Abständen von Listen Werten -- soll nur genutzt werden, wenn listAuf und listZu gleich groß sind.
-fun kleinsterAbstandVonIndices(listAuf:MutableList<Int>, listZu:MutableList<Int>): MutableList<MutableList<Int>> {
-    // Liste mit den Abständen der AUF Klammern zu den ZU Klammern
-    // temp[0] entspricht der ersten AUFGEHENDEN Klammer, die WERTE drinne sind die ABSTÄNDE zu den schließenden Klammern!!
-    var temp = MutableList(listAuf.size){MutableList(listAuf.size){0}}
-    for (i in listAuf.indices){
-        for (j in listZu.indices){
-            if(listAuf[i] - listZu[j] < 0)
-                temp[i][j] = listAuf[i] - listZu[j]
-        }
-    }
-    return temp
-}
-// sortiert Map auf die richtigen stellen der Klammern
-fun sortiereMap(map: Map<Int, Int>):Map<Int, Int>{
-    var temp = map
-    for(keys in map){
-        println(keys)
-    }
-    return temp
-}
 
 // Prüft in der Formel die passenden indices der Klammern.
-fun teileFormelInKlammern(formel: String) {
-    if(formel.contains("(")){
-        var temp = formel
-        var map = emptyMap<Int, Int>().toMutableMap()
+fun teileFormelInKlammern(formel: String):String {
+    var ret = ""
+    if(formel.contains("(")) {
         // In diesen Listen werden alle Indices der Klammern gespeichert.
-        var subAuf = MutableList(anzahlKlammernAuf(formel)){0}
-        var subZU = MutableList(anzahlKlammernZu(formel)){0}
-        var sub = MutableList<String>(0){""}
+        var subAuf = MutableList(anzahlKlammernAuf(formel)) { 0 }
+        var subZU = MutableList(anzahlKlammernZu(formel)) { 0 }
+        var sub = MutableList<String>(0) { "" }
         // für die Indizes in den Listen -> um Arrayoutofbound zu vermeiden.
         var pointerA = 0
         var pointerB = 0
         // Prüfung der indices
-        for(i in formel.indices){
-            if(formel[i] == '('){
+        for (i in formel.indices) {
+            if (formel[i] == '(') {
                 subAuf[pointerA] = i
                 pointerA++
             }
-            if(formel[i] == ')'){
+            if (formel[i] == ')') {
                 subZU[pointerB] = i
                 pointerB++
             }
         }
         var lauf = 0
-        while (isKlammern(temp)){
-            println(temp.replace(
-                temp.substring(
-                    subAuf[lauf]+1,
-                    subZU[lauf]+1),
-                "x"))
+        while (lauf < anzahlKlammernAuf(formel)) {
             sub.add(
-                temp.replace(
-                    temp.substring(
-                        subAuf[lauf]+1,
-                        subZU[lauf]+1),
-                    "x")
+                formel.substring(
+                    subAuf[lauf] + 1,
+                    subZU[lauf]
+                )
             )
-            println(sub)
-            if('(' in sub[lauf]){
-                sub[lauf] = temp.replace(
-                    temp.substring(
-                        subAuf[lauf+1],
-                        subZU[lauf+1]),
-                    "x")
+            if ('(' in sub[lauf]) {
+                sub[lauf] = formel.substring(
+                    subAuf[lauf] + 1,
+                    subZU[lauf + 1]
+                )
+                sub.add(
+                    formel.substring(
+                        subAuf[lauf + 1] + 1,
+                        subZU[lauf]
+                    )
+                )
+                ret += "${sub[lauf]} "
+                lauf++
             }
-            println(lauf)
+            ret += "${sub[lauf]} "
             lauf++
-            if(lauf == 2)
-                break
+            println(ret)
         }
-        /*
-
-        for(i in subAuf.indices){
-            map.set(subAuf[i], subZU[i])
-        }
-        sortiereMap(map)
-
-         */
     }else{
-
+        ret = formel
     }
+    return ret
 }
 
 // Funktion in der alle Komponenten zusammengefügt werden
 fun starteProgram() {
     println("Bitte gib hier deine Formel an!")
-
     // Einlesen der Formel
     val formel = readln()
-
     // Wenn die Formel eine FORMEL ist weiter machen! Formel fängt mit Zahl oder Klammer an und auf
     if(isFormelKorrekt(formel)){
         // Der Rechner ist im Stande, Punkt-vor-Strich und Klammern zu erkennen. Darüber hinaus kann er die vier Grundoperationen: Multiplikation, Division, Addition, Subtraktion
@@ -140,6 +108,7 @@ fun starteProgram() {
             if(anzahlKlammernAuf(formel) == anzahlKlammernZu(formel)){
                 println("Die Anzahl der Klammern in dieser Formel betraegt ${anzahlKlammernAuf(formel)}")
                 // AB HIER WEITER
+                teileFormelInKlammern(formel)
             }
             // Bei ungleich -> Neue Formel
             else {
@@ -156,11 +125,6 @@ fun starteProgram() {
 }
 fun main() {
     // Start des Programms
-    //starteProgram()
-    // ((13+3)+3)+4/(4+31)
-    // (  x1  + 3) + 4/(4+31)
-    //    x2   + 4 / ( 4+31)
-    // x2 + 4 / x3
-    var formel = "((13+3)+3)+4/(4+31)"
-    teileFormelInKlammern(formel)
+    starteProgram()
+    //var formel = "((13+3)+3)+4/(4+31)"
 }
